@@ -2,8 +2,8 @@
 __author__ = 'shms'
 
 import threading
-from cisco_generic_nxos_resource_driver import CiscoNXOSDriver
-from cloudshell.shell.core.context.drivercontext import ResourceCommandContext, ResourceContextDetails, \
+from cisco_nxos_resource_driver import CiscoNXOSDriver
+from cloudshell.shell.core.context.context import ResourceCommandContext, ResourceContextDetails, \
     ReservationContextDetails
 
 class DriverCommandExecution(threading.Thread):
@@ -44,8 +44,10 @@ context.resource.name = 'dsada'
 context.reservation = ReservationContextDetails()
 context.reservation.reservation_id = 'test_id'
 context.resource.attributes = {}
-context.resource.attributes['username'] = 'root'
-context.resource.attributes['password'] = 'Password1'
-context.resource.attributes['host'] = '192.168.42.235'
+context.resource.attributes['User'] = 'root'
+context.resource.attributes['Password'] = 'Password1'
+context.resource.address = '192.168.42.235'
 
-threading.Thread(target=tt.simple_command, args=[context, '10']).start()
+threading.Thread(target=tt.send_custom_command, args=[context, 'kuku']).start()
+# tt.send_custom_command(context, 'kuku')
+# tt.get_inventory(context)
