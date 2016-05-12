@@ -15,7 +15,6 @@ class CiscoNXOSDriver:
         if bindings:
             bootstrap.add_bindings(bindings)
         bootstrap.initialize()
-        # self.config = inject.instance('config')
 
     @context_from_args
     def initialize(self, context):
@@ -48,7 +47,6 @@ class CiscoNXOSDriver:
         logger = inject.instance("logger")
         logger.info(context.resource.__dict__)
         result = handler.discover_snmp()
-        # return handler.normalize_output(result)
         return result
 
     @context_from_args
@@ -129,6 +127,13 @@ class CiscoNXOSDriver:
                                          vlan_range=vlan_range, port_mode=port_mode,
                                          additional_info=additional_info)
         return result_str
+
+    @context_from_args
+    def apply_connectivity_changes(self, context, request):
+        handler = inject.instance('handler')
+        response = handler.apply_connectivity_changes(request)
+        handler.logger.info('finished applying connectivity changes response is:\n{0}'.format(str(response)))
+        return response
 
     @context_from_args
     @inject.params( context='context')
