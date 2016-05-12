@@ -100,36 +100,7 @@ class CiscoNXOSDriver:
         return result_str
 
     @context_from_args
-    @inject.params(context='context')
-    def add_vlan(self, context, ports, vlan_range, port_mode, additional_info):
-        """
-        Assign vlan or vlan range to the certain interface
-        :return: result
-        :rtype: string
-        """
-        handler = inject.instance("handler")
-        result_str = handler.add_vlan(port_list=ports,
-                                      vlan_range=vlan_range.replace(' ', ''),
-                                      port_mode=port_mode,
-                                      additional_info=additional_info)
-        return result_str
-
-    @context_from_args
-    @inject.params(context='context')
-    def remove_vlan(self, context, ports, vlan_range, port_mode, additional_info):
-        """
-        Remove vlan or vlan range from the certain interface
-        :return: result
-        :rtype: string
-        """
-        handler = inject.instance("handler")
-        result_str = handler.remove_vlan(port_list=ports,
-                                         vlan_range=vlan_range, port_mode=port_mode,
-                                         additional_info=additional_info)
-        return result_str
-
-    @context_from_args
-    def apply_connectivity_changes(self, context, request):
+    def ApplyConnectivityChanges(self, context, request):
         handler = inject.instance('handler')
         response = handler.apply_connectivity_changes(request)
         handler.logger.info('finished applying connectivity changes response is:\n{0}'.format(str(response)))
