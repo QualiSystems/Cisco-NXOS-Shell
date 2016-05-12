@@ -87,8 +87,8 @@ class CiscoNXOSDriver:
         :return: result
         :rtype: string
         """
-        cli = inject.instance("cli_service")
-        result_str = cli.send_command(command)
+        handler = inject.instance("handler")
+        result_str = handler.send_command(command)
         return result_str
 
     @context_from_args
