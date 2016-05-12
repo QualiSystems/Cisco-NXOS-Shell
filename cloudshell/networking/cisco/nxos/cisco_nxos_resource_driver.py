@@ -92,7 +92,7 @@ class CiscoNXOSDriver:
         return result_str
 
     @context_from_args
-    def ApplyConnectivityChanges(self, context, request):
+    def apply_connectivity_changes(self, context, request):
         handler = inject.instance('handler')
         response = handler.apply_connectivity_changes(request)
         handler.logger.info('finished applying connectivity changes response is:\n{0}'.format(str(response)))
