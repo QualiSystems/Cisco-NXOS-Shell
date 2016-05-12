@@ -29,14 +29,6 @@ class CiscoNXOSDriver:
         pass
 
     @context_from_args
-    def simple_command(self, command):
-        handler = inject.instance("handler")
-        logger = inject.instance("logger")
-        out = handler.send_command('show ver')
-        logger.info('Command completed ' + out)
-        return out
-
-    @context_from_args
     def get_inventory(self, context):
         """
         Return device structure with all standard attributes
