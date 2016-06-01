@@ -1,9 +1,9 @@
 from unittest import TestCase
 import inject
-from mock import Mock, create_autospec
-from cisco_nxos_resource_driver import CiscoNXOSDriver
+from mock import Mock
+from cloudshell.networking.cisco.nxos.cisco_nxos_resource_driver import CiscoNXOSDriver
 import types
-from cloudshell.networking.cisco.nxos.drivercontext import AutoLoadCommandContext
+from cloudshell.shell.core.context import AutoLoadCommandContext
 
 
 class CiscoNXOSDriverUnitTest(TestCase):
