@@ -77,7 +77,7 @@ class CiscoNXOSDriverUnitTest(TestCase):
     def test_save(self):
         #Arrange
         handler = inject.instance('handler')
-        handler.backup_configuration = Mock()
+        handler.save_configuration = Mock()
         context = Mock(spec=AutoLoadCommandContext)
         context.resource = Mock()
         context.resource.name = Mock(return_value="resource name")
@@ -86,7 +86,7 @@ class CiscoNXOSDriverUnitTest(TestCase):
         #Act
         self.driver.save(context, folder_path, configuration_type)
         #Assert
-        self.assertTrue(handler.backup_configuration.called)
+        self.assertTrue(handler.save_configuration.called)
         pass
 
     def test_restore(self):
