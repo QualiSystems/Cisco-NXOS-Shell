@@ -1,13 +1,10 @@
-__author__ = 'CoYe'
-
+from cloudshell.networking.cisco.cisco_configuration_operations import CiscoConfigurationOperations
 import re
 
-from cloudshell.networking.cisco.cisco_handler_base import CiscoHandlerBase
 
-class CiscoNXOSHandler(CiscoHandlerBase):
+class CiscoNXOSConfigurationOperations(CiscoConfigurationOperations):
     def __init__(self):
-        CiscoHandlerBase.__init__(self)
-        self.supported_os = ['NXOS', 'NX-OS']
+        CiscoConfigurationOperations.__init__(self)
 
     def _check_replace_command(self):
         return True
