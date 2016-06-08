@@ -6,8 +6,8 @@ from cloudshell.networking.cisco.nxos.cisco_nxos_configuration_operations import
 from cloudshell.shell.core.context_utils import get_decrypted_password_by_attribute_name_wrapper
 
 
-DEFAULT_PROMPT = '.*[#>]\s*$'
-ENABLE_PROMPT = '.*#\s*$'
+DEFAULT_PROMPT = '[#>]\s*$'
+ENABLE_PROMPT = '#\s*$'
 CONFIG_MODE_PROMPT = '\(config.*\)#\s*$'
 
 
