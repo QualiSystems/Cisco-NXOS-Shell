@@ -72,7 +72,7 @@ class CiscoNXOSDriver:
         """
 
         handler = inject.instance('handler')
-        response = handler.backup_configuration(destination_host, source_filename, vrf)
+        response = handler.save_configuration(destination_host, source_filename, vrf)
         handler.logger.info('Save completed')
         return response
 

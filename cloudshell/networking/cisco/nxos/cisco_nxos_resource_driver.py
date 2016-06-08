@@ -1,14 +1,14 @@
-__author__ = "shms"
-
-from cloudshell.networking.cisco.nxos.cisco_nxos_bootstrap import CiscoNXOSBootstrap
+from cloudshell.networking.generic_bootstrap import NetworkingGenericBootstrap
+from cloudshell.networking.networking_resource_driver_interface import NetworkingResourceDriverInterface
+from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
 from cloudshell.shell.core.context_utils import context_from_args
 import cloudshell.networking.cisco.nxos.cisco_nxos_configuration as config
 import inject
 
 
-class CiscoNXOSDriver:
+class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface):
     def __init__(self):
-        bootstrap = CiscoNXOSBootstrap()
+        bootstrap = NetworkingGenericBootstrap()
         bootstrap.add_config(config)
         bootstrap.initialize()
 
@@ -36,7 +36,7 @@ class CiscoNXOSDriver:
         return result
 
     @context_from_args
-    def load_firmware(self, context, remote_host, file_path):
+    def update_firmware(self, context, remote_host, file_path):
         """
         Upload and updates firmware on the resource
         :return: result
@@ -72,7 +72,7 @@ class CiscoNXOSDriver:
         """
 
         handler = inject.instance('handler')
-        response = handler.backup_configuration(destination_host, source_filename, vrf)
+        response = handler.save_configuration(destination_host, source_filename, vrf)
         handler.logger.info('Save completed')
         return response
 
