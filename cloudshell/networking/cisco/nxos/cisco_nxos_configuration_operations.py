@@ -25,8 +25,10 @@ class CiscoNXOSConfigurationOperations(CiscoConfigurationOperations):
             raise Exception('Cisco NXOS', 'Could not backup startup-config, check if bootflash has enough free space')
 
     def _replace_startup_config_with(self, source_filename, vrf):
+        # its not possible to copy directly from TFTP to startup, so first copy to local, then from local to start
         sc = 'startup-config'
-
-        if not self.copy(source_file=source_filename, destination_file=sc, vrf=vrf):
+        lc = 'bootflash:local-copy'
+        self.copy(source_file=source_filename, destination_file=lc)
+        if not self.copy(source_file=lc, destination_file=sc, vrf=vrf):
             raise Exception('Cisco NXOS', 'Failed to replace startup config, detailed information in logs')
 
