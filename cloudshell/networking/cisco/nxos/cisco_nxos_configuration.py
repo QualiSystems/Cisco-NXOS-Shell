@@ -29,10 +29,12 @@ SUPPORTED_OS = ['NXOS', 'NX-OS']
 
 
 def enter_enable_mode(session):
-    session.hardware_expect('enable', re_string=DEFAULT_PROMPT + '|' + ENABLE_PROMPT,
-                            expect_map={'[Pp]assword': lambda session: session.send_line(
-                                get_decrypted_password_by_attribute_name_wrapper('Enable Password')())})
-    result = session.hardware_expect('', re_string=DEFAULT_PROMPT + '|' + ENABLE_PROMPT)
+    result = session.hardware_expect('', re_string=DEFAULT_PROMPT)
+    if not re.search(ENABLE_PROMPT, result):
+        session.hardware_expect('enable', re_string=DEFAULT_PROMPT,
+                                expect_map={'[Pp]assword': lambda session: session.send_line(
+                                    get_decrypted_password_by_attribute_name_wrapper('Enable Password')())})
+    result = session.hardware_expect('', re_string=DEFAULT_PROMPT)
     if not re.search(ENABLE_PROMPT, result):
         raise Exception('enter_enable_mode', 'Enable password is incorrect')
 
