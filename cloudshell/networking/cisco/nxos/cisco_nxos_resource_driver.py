@@ -43,6 +43,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
         :param path: source config file
         :param config_type: running or startup configs
         :param restore_method: append or override methods
+        :param vrf: VRF management Name
         """
 
         configuration_operations = inject.instance('configuration_operations')
@@ -57,6 +58,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
 
         :param source_filename: source file, which will be saved
         :param destination_host: destination path where file will be saved
+        :param vrf: VRF management Name
         """
 
         configuration_operations = inject.instance('configuration_operations')
