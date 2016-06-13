@@ -17,6 +17,7 @@ class CiscoNXOSConfigurationOperations(CiscoConfigurationOperations):
 
         self._backup_startup_config(back_up, startup, vrf)
         self._replace_startup_config_with(source_filename, vrf)
+        self._logger.info('Reload device after applying configuration ...')
         self.reload(retries=19, sleep_timeout=30)
         self._replace_startup_config_with(back_up, vrf)
 
