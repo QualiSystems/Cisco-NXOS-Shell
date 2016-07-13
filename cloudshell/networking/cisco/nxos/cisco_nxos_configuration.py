@@ -26,7 +26,7 @@ def send_default_actions(session):
 ENTER_CONFIG_MODE_PROMPT_COMMAND = 'configure terminal'
 EXIT_CONFIG_MODE_PROMPT_COMMAND = 'exit'
 DEFAULT_ACTIONS = send_default_actions
-SUPPORTED_OS = ['NXOS', 'NX-OS']
+SUPPORTED_OS = ["NX[ -]?OS"]
 
 
 def enter_enable_mode(session):
