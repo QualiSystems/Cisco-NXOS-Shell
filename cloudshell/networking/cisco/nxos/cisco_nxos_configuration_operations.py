@@ -1,5 +1,5 @@
 from cloudshell.networking.cisco.cisco_configuration_operations import CiscoConfigurationOperations
-import re
+from cloudshell.shell.core.context_utils import get_attribute_by_name
 
 
 class CiscoNXOSConfigurationOperations(CiscoConfigurationOperations):
@@ -14,6 +14,9 @@ class CiscoNXOSConfigurationOperations(CiscoConfigurationOperations):
             raise Exception('Cisco NXOS', 'Must pass source file name to replace configuration')
         back_up = 'bootflash:backup-sc'
         startup = 'startup-config'
+
+        if not vrf:
+            vrf = get_attribute_by_name('VRF Management Name')
 
         self._backup_startup_config(back_up, startup, vrf)
         self._replace_startup_config_with(source_filename, vrf)
