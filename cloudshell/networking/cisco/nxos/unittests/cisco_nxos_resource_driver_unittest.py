@@ -1,29 +1,33 @@
 from unittest import TestCase
+from cloudshell.shell.core.context import ResourceCommandContext, ResourceContextDetails, ReservationContextDetails
+from cloudshell.networking.cisco.nxos import cisco_nxos_configuration
+from cloudshell.shell.core import context_utils
 import inject
 from mock import Mock
-from cloudshell.networking.cisco.nxos.cisco_nxos_resource_driver import CiscoNXOSDriver
 import types
-from cloudshell.shell.core.context import AutoLoadCommandContext
+import mock
+from cloudshell.networking.cisco.nxos.cisco_nxos_resource_driver import CiscoNXOSDriver
 
 
 class CiscoNXOSDriverUnitTest(TestCase):
+    CONTEXT = ResourceCommandContext()
+    CONTEXT.resource = ResourceContextDetails()
+    CONTEXT.resource.name = 'Nexus_driver'
+    CONTEXT.reservation = ReservationContextDetails()
+    CONTEXT.reservation.reservation_id = 'id'
 
     def setUp(self):
-        config = types.ModuleType('config')
+        config = cisco_nxos_configuration
 
         handler_mock = Mock()
-        config.HANDLER_CLASS = lambda : handler_mock
-
+        cisco_nxos_configuration.HANDLER_CLASS = lambda: handler_mock
         logger_mock = Mock()
-        logger_mock.info = Mock()
-        logger_mock.error = Mock()
-        logger_mock.debug = Mock()
-        config.GET_LOGGER_FUNCTION = lambda : logger_mock
+        config.GET_LOGGER_FUNCTION = lambda: logger_mock
 
         def test_bindings(binder):
             binder.bind('cli_service', Mock())
 
-        self.driver = CiscoNXOSDriver(config, test_bindings)
+        self.driver = CiscoNXOSDriver()
 
     def test_initialize(self):
         #Arrange
@@ -35,13 +39,16 @@ class CiscoNXOSDriverUnitTest(TestCase):
 
     def test_simple_command(self):
         #Arrange
-        handler = inject.instance('handler')
-        handler.send_command = Mock(return_value="show ver output")
-        command = Mock(return_value="show ver")
+        command = 'test command'
+        context_utils.get_resource_name = lambda: 'true'
+
         #Act
-        result = self.driver.simple_command(command)
+        with mock.patch('cloudshell.networking.cisco.cisco_run_command_operations.CiscoRunCommandOperations') as mocked_class:
+            mocked_class.run_custom_command = mock.MagicMock(return_value="show ver output")
+
+        result = self.driver.run_custom_command(self.CONTEXT, command)
         #Assert
-        self.assertTrue(handler.send_command.called)
+        self.assertTrue(mocked_class.run_custom_command.called)
 
     def test_get_inventory(self):
         #Arrange

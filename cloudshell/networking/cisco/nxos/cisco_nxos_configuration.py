@@ -1,9 +1,4 @@
 import re
-from cloudshell.networking.cisco.autoload.cisco_generic_snmp_autoload import CiscoGenericSNMPAutoload
-from cloudshell.networking.cisco.cisco_configuration_operations import CiscoConfigurationOperations
-from cloudshell.networking.cisco.cisco_connectivity_operations import CiscoConnectivityOperations
-from cloudshell.networking.cisco.cisco_run_command_operations import CiscoRunCommandOperations
-from cloudshell.networking.cisco.nxos.cisco_nxos_configuration_operations import CiscoNXOSConfigurationOperations
 from cloudshell.shell.core.context_utils import get_decrypted_password_by_attribute_name_wrapper
 
 
@@ -16,6 +11,7 @@ def send_default_actions(session):
     """Send default commands to configure/clear session outputs
     :return:
     """
+
     enter_enable_mode(session=session)
     session.hardware_expect('terminal length 0', DEFAULT_PROMPT+'|'+ENABLE_PROMPT)
     session.hardware_expect(ENTER_CONFIG_MODE_PROMPT_COMMAND, CONFIG_MODE_PROMPT)
@@ -38,10 +34,3 @@ def enter_enable_mode(session):
     result = session.hardware_expect('', re_string=DEFAULT_PROMPT)
     if not re.search(ENABLE_PROMPT, result):
         raise Exception('enter_enable_mode', 'Enable password is incorrect')
-
-
-CONNECTIVITY_OPERATIONS_CLASS = CiscoConnectivityOperations
-CONFIGURATION_OPERATIONS_CLASS = CiscoNXOSConfigurationOperations
-FIRMWARE_OPERATIONS_CLASS = CiscoNXOSConfigurationOperations
-AUTOLOAD_OPERATIONS_CLASS = CiscoGenericSNMPAutoload
-SEND_COMMAND_OPERATIONS_CLASS = CiscoRunCommandOperations

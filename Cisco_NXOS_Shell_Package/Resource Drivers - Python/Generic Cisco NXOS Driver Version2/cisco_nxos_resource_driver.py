@@ -3,8 +3,8 @@ from cloudshell.networking.cisco.cisco_connectivity_operations import CiscoConne
 from cloudshell.networking.cisco.cisco_run_command_operations import CiscoRunCommandOperations
 from cloudshell.networking.cisco.cisco_state_operations import CiscoStateOperations
 from cloudshell.networking.cisco.nxos.cisco_nxos_configuration_operations import CiscoNXOSConfigurationOperations
-from cloudshell.networking.generic_bootstrap import NetworkingGenericBootstrap
 from cloudshell.networking.networking_resource_driver_interface import NetworkingResourceDriverInterface
+from cloudshell.shell.core.driver_bootstrap import DriverBootstrap
 from cloudshell.shell.core.driver_utils import GlobalLock
 from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
 from cloudshell.shell.core.context_utils import context_from_args
@@ -14,7 +14,7 @@ import cloudshell.networking.cisco.nxos.cisco_nxos_configuration as config
 class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface, GlobalLock):
     def __init__(self):
         super(CiscoNXOSDriver, self).__init__()
-        bootstrap = NetworkingGenericBootstrap()
+        bootstrap = DriverBootstrap()
         bootstrap.add_config(config)
         bootstrap.initialize()
 
