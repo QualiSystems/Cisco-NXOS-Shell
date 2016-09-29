@@ -1,8 +1,8 @@
-from cloudshell.networking.cisco.autoload.cisco_generic_snmp_autoload import CiscoGenericSNMPAutoload
-from cloudshell.networking.cisco.cisco_connectivity_operations import CiscoConnectivityOperations
-from cloudshell.networking.cisco.cisco_run_command_operations import CiscoRunCommandOperations
-from cloudshell.networking.cisco.cisco_state_operations import CiscoStateOperations
-from cloudshell.networking.cisco.nxos.cisco_nxos_configuration_operations import CiscoNXOSConfigurationOperations
+import cloudshell.networking.cisco.autoload.cisco_generic_snmp_autoload as cisco_generic_snmp_autoload
+import cloudshell.networking.cisco.cisco_connectivity_operations as cisco_connectivity_operations
+import cloudshell.networking.cisco.cisco_run_command_operations as cisco_run_command_operations
+import cloudshell.networking.cisco.cisco_state_operations as cisco_state_operations
+import cloudshell.networking.cisco.nxos.cisco_nxos_configuration_operations as cisco_nxos_configuration_operations
 from cloudshell.networking.networking_resource_driver_interface import NetworkingResourceDriverInterface
 from cloudshell.shell.core.driver_bootstrap import DriverBootstrap
 from cloudshell.shell.core.driver_utils import GlobalLock
@@ -31,7 +31,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
 
     @context_from_args
     def ApplyConnectivityChanges(self, context, request):
-        connectivity_operations = CiscoConnectivityOperations()
+        connectivity_operations = cisco_connectivity_operations.CiscoConnectivityOperations()
         connectivity_operations.logger.info('Start applying connectivity changes, request is: {0}'.format(str(request)))
         response = connectivity_operations.apply_connectivity_changes(request)
         connectivity_operations.logger.info('Finished applying connectivity changes, responce is: {0}'.format(str(
@@ -55,7 +55,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
         if not restore_method:
             restore_method = 'override'
 
-        configuration_operations = CiscoNXOSConfigurationOperations()
+        configuration_operations = cisco_nxos_configuration_operations.CiscoNXOSConfigurationOperations()
         response = configuration_operations.restore(path=path, restore_method=restore_method,
                                                     configuration_type=configuration_type,
                                                     vrf_management_name=vrf_management_name)
@@ -63,7 +63,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
         configuration_operations.logger.info(response)
 
     @context_from_args
-    def save(self, context, folder_path, configuration_type=None, vrf_management_name=None):
+    def save(self, context, folder_path='', configuration_type=None, vrf_management_name=None):
         """Save selected file to the provided destination
 
         :param configuration_type: source file, which will be saved
@@ -74,7 +74,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
         if not configuration_type:
             configuration_type = 'running'
 
-        configuration_operations = CiscoNXOSConfigurationOperations()
+        configuration_operations = cisco_nxos_configuration_operations.CiscoNXOSConfigurationOperations()
         response = configuration_operations.save(folder_path, configuration_type, vrf_management_name)
         configuration_operations.logger.info('Save completed')
         return response
@@ -85,7 +85,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
         if not mode:
             mode = 'shallow'
 
-        configuration_operations = CiscoNXOSConfigurationOperations()
+        configuration_operations = cisco_nxos_configuration_operations.CiscoNXOSConfigurationOperations()
         configuration_operations.logger.info('Orchestration save started')
         response = configuration_operations.orchestration_save(mode=mode, custom_params=custom_params)
         configuration_operations.logger.info('Orchestration save completed')
@@ -93,7 +93,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
 
     @context_from_args
     def orchestration_restore(self, context, saved_artifact_info, custom_params=None):
-        configuration_operations = CiscoNXOSConfigurationOperations()
+        configuration_operations = cisco_nxos_configuration_operations.CiscoNXOSConfigurationOperations()
         configuration_operations.logger.info('Orchestration restore started')
         configuration_operations.orchestration_restore(saved_artifact_info=saved_artifact_info,
                                                        custom_params=custom_params)
@@ -107,7 +107,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
         :rtype: string
         """
 
-        autoload_operations = CiscoGenericSNMPAutoload()
+        autoload_operations = cisco_generic_snmp_autoload.CiscoGenericSNMPAutoload()
         autoload_operations.logger.info('Autoload started')
         response = autoload_operations.discover()
         autoload_operations.logger.info('Autoload completed')
@@ -124,7 +124,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
         :rtype: string
         """
 
-        firmware_operations = CiscoNXOSConfigurationOperations()
+        firmware_operations = cisco_nxos_configuration_operations.CiscoNXOSConfigurationOperations()
         response = firmware_operations.load_firmware(path=path, vrf_management_name=vrf_management_name)
         firmware_operations.logger.info(response)
 
@@ -139,11 +139,11 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
         :rtype: string
         """
 
-        firmware_operations = CiscoNXOSConfigurationOperations()
+        firmware_operations = cisco_nxos_configuration_operations.CiscoNXOSConfigurationOperations()
         response = firmware_operations.load_firmware(path=remote_host)
         firmware_operations.logger.info(response)
 
-    @context_from_args
+    # @context_from_args
     def run_custom_command(self, context, custom_command):
         """Send custom command
 
@@ -151,7 +151,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
         :rtype: string
         """
 
-        send_command_operations = CiscoRunCommandOperations()
+        send_command_operations = cisco_run_command_operations.CiscoRunCommandOperations()
         response = send_command_operations.run_custom_command(custom_command=custom_command)
         return response
 
@@ -161,7 +161,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
 
         """
 
-        state_operations = CiscoStateOperations()
+        state_operations = cisco_state_operations.CiscoStateOperations()
         return state_operations.health_check()
 
     @context_from_args
@@ -171,7 +171,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
         :return: result
         :rtype: string
         """
-        send_command_operations = CiscoRunCommandOperations()
+        send_command_operations = cisco_run_command_operations.CiscoRunCommandOperations()
         result_str = send_command_operations.run_custom_config_command(custom_command=custom_command)
         return result_str
 
@@ -183,7 +183,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
         :rtype: string
         """
 
-        send_command_operations = CiscoRunCommandOperations()
+        send_command_operations = cisco_run_command_operations.CiscoRunCommandOperations()
         response = send_command_operations.run_custom_command(custom_command=custom_command)
         return response
 
@@ -195,7 +195,7 @@ class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface
         :rtype: string
         """
 
-        send_command_operations = CiscoRunCommandOperations()
+        send_command_operations = cisco_run_command_operations.CiscoRunCommandOperations()
         result_str = send_command_operations.run_custom_config_command(custom_command=custom_command)
         return result_str
 
