@@ -1,4 +1,5 @@
-from cloudshell.networking.cisco.ios.autoload.cisco_autoload_runner import CiscoIOSAutoloadRunner as AutoloadRunner
+from cloudshell.networking.cisco.nxos.runners.cisco_nxos_autoload_runner import \
+    CiscoNXOSAutoloadRunner as AutoloadRunner
 from cloudshell.networking.cisco.runners.cisco_configuration_runner import \
     CiscoConfigurationRunner as ConfigurationRunner
 from cloudshell.networking.cisco.runners.cisco_connectivity_runner import \
