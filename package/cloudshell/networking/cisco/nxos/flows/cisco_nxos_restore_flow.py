@@ -7,7 +7,7 @@ from cloudshell.networking.cisco.flow.cisco_restore_flow import CiscoRestoreFlow
 
 
 class CiscoNXOSRestoreFlow(CiscoRestoreFlow):
-    STARTUP_LOCATION = "nvram:startup_config"
+    STARTUP_LOCATION = "nvram:startup-config"
     BACKUP_STARTUP_LOCATION = "bootflash:backup-sc"
 
     def __init__(self, cli_handler, logger):
