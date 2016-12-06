@@ -49,7 +49,7 @@ class CiscoNXOSRestoreFlow(CiscoRestoreFlow):
                          logger=self._logger,
                          source=self.STARTUP_LOCATION,
                          destination=self.BACKUP_STARTUP_LOCATION,
-                         vrf=vrf_management_name,
+                         vrf=None,
                          action_map=copy_action_map)
                     copy(session=enable_session, logger=self._logger, source=path,
                          destination=self.STARTUP_LOCATION, vrf=vrf_management_name,
@@ -59,7 +59,7 @@ class CiscoNXOSRestoreFlow(CiscoRestoreFlow):
                          logger=self._logger,
                          source=self.BACKUP_STARTUP_LOCATION,
                          destination=self.STARTUP_LOCATION,
-                         vrf=vrf_management_name,
+                         vrf=None,
                          action_map=copy_action_map)
                 else:
                     copy(session=enable_session, logger=self._logger, source=path,
