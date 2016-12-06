@@ -9,6 +9,7 @@ from cloudshell.networking.cisco.flow.cisco_restore_flow import CiscoRestoreFlow
 class CiscoNXOSRestoreFlow(CiscoRestoreFlow):
     STARTUP_LOCATION = "nvram:startup-config"
     BACKUP_STARTUP_LOCATION = "bootflash:backup-sc"
+    TEMP_STARTUP_LOCATION = "bootflash:local-copy"
 
     def __init__(self, cli_handler, logger):
         super(CiscoNXOSRestoreFlow, self).__init__(cli_handler, logger)
@@ -45,14 +46,20 @@ class CiscoNXOSRestoreFlow(CiscoRestoreFlow):
 
             elif "running" in configuration_type:
                 if restore_method == "override":
+                    copy(session=enable_session, logger=self._logger, source=path,
+                         destination=self.TEMP_STARTUP_LOCATION, vrf=vrf_management_name,
+                         action_map=copy_action_map)
                     copy(session=enable_session,
                          logger=self._logger,
                          source=self.STARTUP_LOCATION,
                          destination=self.BACKUP_STARTUP_LOCATION,
                          vrf=None,
                          action_map=copy_action_map)
-                    copy(session=enable_session, logger=self._logger, source=path,
-                         destination=self.STARTUP_LOCATION, vrf=vrf_management_name,
+                    copy(session=enable_session,
+                         logger=self._logger,
+                         source=self.TEMP_STARTUP_LOCATION,
+                         destination=self.STARTUP_LOCATION,
+                         vrf=None,
                          action_map=copy_action_map)
                     reload_device(session=enable_session, logger=self._logger, timeout=500)
                     copy(session=enable_session,
