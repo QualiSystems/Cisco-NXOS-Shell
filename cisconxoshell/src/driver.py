@@ -1,4 +1,4 @@
-from cloudshell.devices.driver_helper import get_cli, get_logger_with_thread_id, get_api
+from cloudshell.networking.devices.driver_helper import get_cli, get_logger_with_thread_id, get_api
 from cloudshell.networking.cisco.nxos.runners.cisco_nxos_autoload_runner import \
     CiscoNXOSAutoloadRunner as AutoloadRunner
 from cloudshell.networking.cisco.nxos.runners.cisco_nxos_configuration_runner import \
