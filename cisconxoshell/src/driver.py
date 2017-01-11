@@ -1,3 +1,4 @@
+from cloudshell.devices.driver_helper import get_cli, get_logger_with_thread_id, get_api
 from cloudshell.networking.cisco.nxos.runners.cisco_nxos_autoload_runner import \
     CiscoNXOSAutoloadRunner as AutoloadRunner
 from cloudshell.networking.cisco.nxos.runners.cisco_nxos_configuration_runner import \
@@ -8,7 +9,6 @@ from cloudshell.networking.cisco.runners.cisco_firmware_runner import CiscoFirmw
 from cloudshell.networking.cisco.runners.cisco_run_command_runner import CiscoRunCommandRunner as CommandRunner
 from cloudshell.networking.cisco.runners.cisco_state_runner import CiscoStateRunner as StateRunner
 from cloudshell.shell.core.context_utils import get_attribute_by_name
-from cloudshell.networking.devices.driver_helper import get_logger_with_thread_id, get_api, get_cli
 from cloudshell.shell.core.context import ResourceCommandContext
 from cloudshell.networking.networking_resource_driver_interface import NetworkingResourceDriverInterface
 from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
@@ -56,7 +56,7 @@ class CiscoNXOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriverI
         return result
 
     @GlobalLock.lock
-    def restore(self, context, path, configuration_type='running', restore_method='override', vrf_management_name=None):
+    def restore(self, context, path, configuration_type, restore_method, vrf_management_name):
         """Restore selected file to the provided destination
 
         :param ResourceCommandContext context: ResourceCommandContext object with all Resource Attributes inside
@@ -85,7 +85,7 @@ class CiscoNXOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriverI
                                          vrf_management_name=vrf_management_name)
         logger.info('Restore completed')
 
-    def save(self, context, folder_path='', configuration_type='running', vrf_management_name=None):
+    def save(self, context, folder_path, configuration_type, vrf_management_name):
         """Save selected file to the provided destination
 
         :param ResourceCommandContext context: ResourceCommandContext object with all Resource Attributes inside
@@ -111,7 +111,7 @@ class CiscoNXOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriverI
         logger.info('Save completed')
         return response
 
-    def orchestration_save(self, context, mode="shallow", custom_params=None):
+    def orchestration_save(self, context, mode, custom_params):
         """
 
         :param ResourceCommandContext context: ResourceCommandContext object with all Resource Attributes inside
@@ -127,12 +127,12 @@ class CiscoNXOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriverI
         api = get_api(context)
 
         configuration_operations = ConfigurationRunner(logger=logger, api=api, cli=self._cli, context=context)
-        logger.info('Orchestration save started')
+        logger.info('Orchestration save started, request is: {}'.format(custom_params))
         response = configuration_operations.orchestration_save(mode=mode, custom_params=custom_params)
-        logger.info('Orchestration save completed')
+        logger.info('Orchestration save completed, response is: {}'.format(response))
         return response
 
-    def orchestration_restore(self, context, saved_artifact_info, custom_params=None):
+    def orchestration_restore(self, context, saved_artifact_info, custom_params):
         """
 
         :param ResourceCommandContext context: ResourceCommandContext object with all Resource Attributes inside
@@ -144,7 +144,7 @@ class CiscoNXOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriverI
         api = get_api(context)
 
         configuration_operations = ConfigurationRunner(logger=logger, api=api, cli=self._cli, context=context)
-        logger.info('Orchestration restore started')
+        logger.info('Orchestration restore started, request is: {}'.format(saved_artifact_info))
         configuration_operations.orchestration_restore(saved_artifact_info=saved_artifact_info,
                                                        custom_params=custom_params)
         logger.info('Orchestration restore completed')
@@ -168,7 +168,7 @@ class CiscoNXOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriverI
         return response
 
     @GlobalLock.lock
-    def load_firmware(self, context, path, vrf_management_name=None):
+    def load_firmware(self, context, path, vrf_management_name):
         """Upload and updates firmware on the resource
 
         :param ResourceCommandContext context: ResourceCommandContext object with all Resource Attributes inside
