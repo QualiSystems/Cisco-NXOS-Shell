@@ -279,8 +279,7 @@
                         <AttributeValue Name="Serial Number" Value=""/>
                     </AttributeValues>
                     <ParentModels>
-                        <ParentModelName>Cisco IOS Switch</ParentModelName>
-                        <ParentModelName>Cisco IOS Router</ParentModelName>
+                        <ParentModelName>Cisco NXOS Switch</ParentModelName>
                     </ParentModels>
                     <Drivers/>
                     <Scripts/>
@@ -470,8 +469,7 @@
                         <AttributeValue Name="Port Description" Value=""/>
                     </AttributeValues>
                     <ParentModels>
-                        <ParentModelName>Cisco IOS Switch</ParentModelName>
-                        <ParentModelName>Cisco IOS Router</ParentModelName>
+                        <ParentModelName>Cisco NXOS Switch</ParentModelName>
                     </ParentModels>
                     <Drivers/>
                     <Scripts/>
