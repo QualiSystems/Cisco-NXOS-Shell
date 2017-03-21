@@ -3,8 +3,8 @@ from cloudshell.networking.cisco.nxos.runners.cisco_nxos_autoload_runner import 
     CiscoNXOSAutoloadRunner as AutoloadRunner
 from cloudshell.networking.cisco.nxos.runners.cisco_nxos_configuration_runner import \
     CiscoNXOSConfigurationRunner as ConfigurationRunner
-from cloudshell.networking.cisco.runners.cisco_connectivity_runner import \
-    CiscoConnectivityRunner as ConnectivityRunner
+from cloudshell.networking.cisco.nxos.runners.cisco_nxos_connectivity_runner import \
+    CiscoNXOSConnectivityRunner as ConnectivityRunner
 from cloudshell.networking.cisco.runners.cisco_firmware_runner import CiscoFirmwareRunner as FirmwareRunner
 from cloudshell.networking.cisco.runners.cisco_run_command_runner import CiscoRunCommandRunner as CommandRunner
 from cloudshell.networking.cisco.runners.cisco_state_runner import CiscoStateRunner as StateRunner

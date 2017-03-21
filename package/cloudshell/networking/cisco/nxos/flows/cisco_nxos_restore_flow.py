@@ -33,17 +33,17 @@ class CiscoNXOSRestoreFlow(CiscoRestoreFlow):
             configuration_type += "-config"
 
         with self._cli_handler.get_cli_service(self._cli_handler.enable_mode) as enable_session:
-            copy_action_map = self._prepare_action_map(path, configuration_type)
             reload_action_map = self._prepare_reload_act_map()
 
             if restore_method == "override":
                 if self._cli_handler.cli_type.lower() != "console":
-                    raise Exception(self.__class__.__name__,
-                                    "Unsupported cli session type: {0}. Only Console allowed for restore override".format(
-                                        self._cli_handler.cli_type.lower()))
+                    raise Exception(
+                        self.__class__.__name__,
+                        "Unsupported cli session type: {0}. Only Console allowed for restore override".format(
+                            self._cli_handler.cli_type.lower()))
                 copy(session=enable_session, logger=self._logger, source=path,
                      destination=self.TEMP_STARTUP_LOCATION, vrf=vrf_management_name,
-                     action_map=copy_action_map)
+                     action_map=self._prepare_action_map(path, self.TEMP_STARTUP_LOCATION))
                 write_erase(enable_session, self._logger)
                 reload_device_via_console(enable_session, self._logger, action_map=reload_action_map)
                 copy(session=enable_session, logger=self._logger, source=self.TEMP_STARTUP_LOCATION,
@@ -55,11 +55,12 @@ class CiscoNXOSRestoreFlow(CiscoRestoreFlow):
                      action_map=self._prepare_action_map(self.RUNNING_LOCATION, self.STARTUP_LOCATION), timeout=200)
             else:
                 if "startup" in configuration_type:
-                    raise Exception(self.__class__.__name__, "Restore of startup config in append mode is not supported")
+                    raise Exception(self.__class__.__name__,
+                                    "Restore of startup config in append mode is not supported")
                 else:
                     copy(session=enable_session, logger=self._logger, source=path,
                          destination=configuration_type, vrf=vrf_management_name,
-                         action_map=copy_action_map)
+                         action_map=self._prepare_action_map(path, configuration_type))
 
     def _prepare_reload_act_map(self):
         action_map = OrderedDict()
