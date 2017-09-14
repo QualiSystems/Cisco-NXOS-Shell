@@ -18,12 +18,12 @@ from cloudshell.shell.core.driver_utils import GlobalLock
 from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
 
 
-class CiscoNXOSDriver(ResourceDriverInterface, NetworkingResourceDriverInterface, GlobalLock):
+class CiscoNXOSResourceDriver(ResourceDriverInterface, NetworkingResourceDriverInterface, GlobalLock):
     SUPPORTED_OS = ["NX[ -]?OS|NXOS"]
     SHELL_NAME = ""
 
     def __init__(self):
-        super(CiscoNXOSDriver, self).__init__()
+        super(CiscoNXOSResourceDriver, self).__init__()
         self._cli = None
 
     def initialize(self, context):
