@@ -8,19 +8,19 @@ Tests for `CiscoNXOSShellDriver`
 import unittest
 from mock import patch
 
-from cloudshell.shell.core.context import ResourceCommandContext, ResourceContextDetails, ReservationContextDetails
+from cloudshell.shell.core.context import ResourceCommandContext
 from src.cisco_nxos_resource_driver import CiscoNXOSResourceDriver
 
 
-@patch('src.driver.get_api')
-@patch('src.driver.get_logger_with_thread_id')
-@patch('src.driver.ResourceCommandContext', autospec=ResourceCommandContext)
+@patch('src.cisco_nxos_resource_driver.get_api')
+@patch('src.cisco_nxos_resource_driver.get_logger_with_thread_id')
+@patch('src.cisco_nxos_resource_driver.ResourceCommandContext', autospec=ResourceCommandContext)
 class TestCiscoNXOSShellDriver(unittest.TestCase):
     def setUp(self):
         self.driver = CiscoNXOSResourceDriver()
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.get_cli')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.get_cli')
     def test_initialize(self, mocked_cli, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Setup
         mocked_get_attr.sessions_concurrency_limit.return_value = "1"
@@ -29,8 +29,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         # Assert
         self.assertTrue(result, 'Finished initializing')
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.AutoloadRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.AutoloadRunner')
     def test_get_inventory(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         mocked_class.return_value.discover.return_value = ''
@@ -41,8 +41,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         # Assert
         mocked_class.return_value.discover.assert_called()
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.CommandRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.CommandRunner')
     def test_run_custom_command(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         command = 'test command'
@@ -56,8 +56,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         self.assertTrue(response, result)
         mocked_class.return_value.run_custom_command.assert_called_with(custom_command=command)
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.StateRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.StateRunner')
     def test_health_check(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         response = 'response'
@@ -70,8 +70,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         self.assertTrue(response, result)
         mocked_class.return_value.health_check.assert_called_with()
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.CommandRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.CommandRunner')
     def test_run_custom_config_command(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         command = 'test command'
@@ -85,8 +85,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         self.assertTrue(response, result)
         mocked_class.return_value.run_custom_config_command.assert_called_with(custom_command=command)
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.CommandRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.CommandRunner')
     def test_send_custom_command(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         command = 'test command'
@@ -100,8 +100,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         self.assertTrue(response, result)
         mocked_class.return_value.run_custom_command.assert_called_with(custom_command=command)
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.CommandRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.CommandRunner')
     def test_send_custom_config_command(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         command = 'test command'
@@ -115,8 +115,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         self.assertTrue(response, result)
         mocked_class.return_value.run_custom_config_command.assert_called_with(custom_command=command)
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.FirmwareRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.FirmwareRunner')
     def test_load_firmware(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         path = 'test'
@@ -129,8 +129,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         # Assert
         mocked_class.return_value.load_firmware.assert_called_with(path=path, vrf_management_name=vrf_management_name)
 
-    @patch('src.cisco_ios_resource_driver.FirmwareRunner')
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.FirmwareRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
     def test_load_firmware_no_vrf(self, mocked_get_attr, mocked_class, mocked_context, mocked_logger, mocked_api):
         # Arrange
         path = 'test'
@@ -144,8 +144,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         # Assert
         mocked_class.return_value.load_firmware.assert_called_with(path=path, vrf_management_name=vrf_management_name)
 
-    @patch('src.cisco_ios_resource_driver.FirmwareRunner')
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.FirmwareRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
     def test_update_firmware(self, mocked_get_attr, mocked_class, mocked_context, mocked_logger, mocked_api):
         # Arrange
         remote_host = 'test'
@@ -161,8 +161,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         mocked_class.return_value.load_firmware.assert_called_with(path=remote_host,
                                                                    vrf_management_name=vrf_management_name)
 
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
     def test_save_no_params(self, mocked_get_attr, mocked_class, mocked_context, mocked_logger, mocked_api):
         # Arrange
         mocked_class.return_value.save.return_value = ''
@@ -176,8 +176,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         mocked_class.return_value.save.assert_called_with(folder_path='', configuration_type='running',
                                                           vrf_management_name=vrf_management_name)
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
     def test_save_all_params(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         folder_path = 'ftp://ftpuser:ftppass@server/folder'
@@ -195,8 +195,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
                                                           configuration_type=configuration_type,
                                                           vrf_management_name=vrf_management_name)
 
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
     def test_save_no_vrf(self, mocked_get_attr, mocked_class, mocked_context, mocked_logger, mocked_api):
         # Arrange
         folder_path = 'ftp://ftpuser:ftppass@server/folder'
@@ -214,8 +214,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
                                                           folder_path=folder_path,
                                                           vrf_management_name=vrf)
 
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
     def test_save_no_vrf_no_folder_path(self, mocked_get_attr, mocked_class, mocked_context, mocked_logger, mocked_api):
         # Arrange
         configuration_type = 'startup'
@@ -233,8 +233,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
                                                           folder_path='',
                                                           vrf_management_name=vrf)
 
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
     def test_save_no_vrf_no_config_file(self, mocked_get_attr, mocked_class, mocked_context, mocked_logger, mocked_api):
         # Arrange
         folder_path = 'ftp://ftpuser:ftppass@server/folder'
@@ -250,8 +250,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
                                                           folder_path=folder_path,
                                                           vrf_management_name=vrf)
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
     def test_restore_all_params(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         path = 'ftp://ftpuser:ftppass@server/folder'
@@ -269,8 +269,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
                                                              restore_method=restore_method,
                                                              vrf_management_name=vrf_management_name)
 
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
     def test_restore_no_vrf(self, mocked_get_attr, mocked_class, mocked_context, mocked_logger, mocked_api):
         # Arrange
         path = 'ftp://ftpuser:ftppass@server/folder'
@@ -288,8 +288,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         mocked_class.return_value.restore.assert_called_with(path=path, configuration_type=configuration_type,
                                                              restore_method=restore_method, vrf_management_name=vrf)
 
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
     def test_restore_no_vrf_no_restore_method(self, mocked_get_attr, mocked_class, mocked_context, mocked_logger, mocked_api):
         # Arrange
         path = 'ftp://ftpuser:ftppass@server/folder'
@@ -306,8 +306,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         mocked_class.return_value.restore.assert_called_with(path=path, configuration_type=configuration_type,
                                                              restore_method='override', vrf_management_name=vrf)
 
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
     def test_restore_no_optional_params(self, mocked_get_attr, mocked_class, mocked_context, mocked_logger, mocked_api):
         # Arrange
         path = 'ftp://ftpuser:ftppass@server/folder'
@@ -324,8 +324,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         mocked_class.return_value.restore.assert_called_with(path=path, configuration_type='running',
                                                              restore_method='override', vrf_management_name=None)
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
     def test_orchestration_save_no_optional_params(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         mocked_class.return_value.orchestration_save.return_value = ''
@@ -336,8 +336,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         # Assert
         mocked_class.return_value.orchestration_save.assert_called_with(mode='shallow', custom_params=None)
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
     def test_orchestration_save(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         mode = 'shallow'
@@ -350,8 +350,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         # Assert
         mocked_class.return_value.orchestration_save.assert_called_with(mode=mode, custom_params=custom_params)
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
     def test_orchestration_save_no_custom_params(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         mocked_class.return_value.orchestration_save.return_value = ''
@@ -362,8 +362,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         # Assert
         mocked_class.return_value.orchestration_save.assert_called_with(mode='shallow', custom_params=None)
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
     def test_orchestration_restore_no_custom_params(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         saved_artifact_info = 'test json'
@@ -377,8 +377,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         mocked_class.return_value.orchestration_restore.assert_called_with(saved_artifact_info=saved_artifact_info,
                                                                            custom_params=None)
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.ConfigurationRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConfigurationRunner')
     def test_orchestration_restore_all_params(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         saved_artifact_info = 'test json'
@@ -392,8 +392,8 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         mocked_class.return_value.orchestration_restore.assert_called_with(saved_artifact_info=saved_artifact_info,
                                                                            custom_params=custom_params)
 
-    @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
-    @patch('src.cisco_ios_resource_driver.ConnectivityRunner')
+    @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
+    @patch('src.cisco_nxos_resource_driver.ConnectivityRunner')
     def test_apply_connectivity_changes(self, mocked_class, mocked_get_attr, mocked_context, mocked_logger, mocked_api):
         # Arrange
         request = 'test json'
