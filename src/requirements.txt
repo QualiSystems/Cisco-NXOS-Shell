@@ -1,1 +1,2 @@
-cloudshell-networking-cisco-nxos>=4.0.0,<4.1.0
+cloudshell-networking-cisco-nxos>=5.0,<5.1
+
