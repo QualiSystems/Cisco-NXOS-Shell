@@ -9,7 +9,7 @@ import unittest
 from mock import patch
 
 from cloudshell.shell.core.context import ResourceCommandContext, ResourceContextDetails, ReservationContextDetails
-from src.cisco_nxos_resource_driver import CiscoNXOSDriver
+from src.cisco_nxos_resource_driver import CiscoNXOSResourceDriver
 
 
 @patch('src.driver.get_api')
@@ -17,7 +17,7 @@ from src.cisco_nxos_resource_driver import CiscoNXOSDriver
 @patch('src.driver.ResourceCommandContext', autospec=ResourceCommandContext)
 class TestCiscoNXOSShellDriver(unittest.TestCase):
     def setUp(self):
-        self.driver = CiscoNXOSDriver()
+        self.driver = CiscoNXOSResourceDriver()
 
     @patch('src.cisco_ios_resource_driver.create_networking_resource_from_context')
     @patch('src.cisco_ios_resource_driver.get_cli')
