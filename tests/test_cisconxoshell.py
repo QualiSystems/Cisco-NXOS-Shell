@@ -6,9 +6,9 @@ Tests for `CiscoNXOSShellDriver`
 """
 
 import unittest
-from mock import patch
+from mock import patch, MagicMock
 
-from cloudshell.shell.core.context import ResourceCommandContext
+from cloudshell.shell.core.driver_context import ResourceCommandContext
 from src.cisco_nxos_resource_driver import CiscoNXOSResourceDriver
 
 
@@ -17,6 +17,7 @@ from src.cisco_nxos_resource_driver import CiscoNXOSResourceDriver
 @patch('src.cisco_nxos_resource_driver.ResourceCommandContext', autospec=ResourceCommandContext)
 class TestCiscoNXOSShellDriver(unittest.TestCase):
     def setUp(self):
+        self.context = MagicMock()
         self.driver = CiscoNXOSResourceDriver()
 
     @patch('src.cisco_nxos_resource_driver.create_networking_resource_from_context')
@@ -25,7 +26,7 @@ class TestCiscoNXOSShellDriver(unittest.TestCase):
         # Setup
         mocked_get_attr.sessions_concurrency_limit.return_value = "1"
         # Act
-        result = self.driver.initialize(mocked_context)
+        result = self.driver.initialize(self.context)
         # Assert
         self.assertTrue(result, 'Finished initializing')
 
