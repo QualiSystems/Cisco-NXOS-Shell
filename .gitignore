@@ -1,1 +1,2 @@
-cisconxoshell/src/test_nxos.py
+src/test_nxos.py
+*.pyc
